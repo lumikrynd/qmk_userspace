@@ -60,9 +60,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Sym Layer: Numbers and symbols
  */
     [_SYM] = LAYOUT(
-      KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 ,                                       KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL ,
-     KC_TILD , KC_EXLM,  KC_AT , KC_HASH,  KC_DLR, KC_PERC,                                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
-     KC_PIPE , KC_BSLS, KC_COLN, KC_SCLN, KC_MINS, KC_LBRC, KC_LCBR, _______, _______, KC_RCBR, KC_RBRC, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
+     DK_HALF ,   DK_1 ,   DK_2 ,   DK_3 ,   DK_4 ,   DK_5 ,                                       DK_6 ,   DK_7 ,   DK_8 ,   DK_9 ,   DK_0 , DK_PLUS ,
+     DK_HALF , S(DK_1), S(DK_2), S(DK_3), DK_DLR , S(DK_5),                                     S(DK_6), S(DK_7), S(DK_8), S(DK_9), S(DK_0), DK_QUES ,
+     DK_BSLS , XXXXXXX, DK_AT  , DK_PND , S(DK_4), XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, DK_TILD, DK_LCBR, DK_LBRC, DK_RBRC, DK_RCBR, DK_PIPE ,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
