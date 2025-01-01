@@ -21,7 +21,7 @@
 
 enum layers {
     _QWERTY = 0,
-    _SYM,
+    _NUMROW,
     _NAV,
     _FUNCTION,
     _ADJUST,
@@ -31,10 +31,10 @@ enum layers {
 // Aliases for readability
 #define QWERTY   DF(_QWERTY)
 
-#define SYM      MO(_SYM)
-#define NAV      MO(_NAV)
-#define FKEYS    MO(_FUNCTION)
-#define ADJUST   MO(_ADJUST)
+#define L_NUR    MO(_NUMROW)
+#define L_NAV    MO(_NAV)
+#define L_FUN    MO(_FUNCTION)
+#define L_ADJ    MO(_ADJUST)
 
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_DIA  MT(MOD_RCTL, DK_DIAE)
@@ -52,14 +52,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , DK_Q ,  DK_W   ,  DK_E  ,   DK_R ,   DK_T ,                                        DK_Y,   DK_U ,  DK_I ,   DK_O ,  DK_P , KC_BSPC,
      CTL_ESC , DK_A ,  DK_S   ,  DK_D  ,   DK_F ,   DK_G ,                                        DK_H,   DK_J ,  DK_K ,   DK_L ,DK_QUOT, CTL_DIA,
-     KC_LSFT , DK_Z ,  DK_X   ,  DK_C  ,   DK_V ,   DK_B , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, DK_N,   DK_M ,DK_COMM, DK_DOT ,DK_MINS, KC_RSFT,
-                                ADJUST , KC_LGUI, ALT_ENT, KC_SPC , NAV   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
+     KC_LSFT , DK_Z ,  DK_X   ,  DK_C  ,   DK_V ,   DK_B , KC_LBRC, KC_CAPS,    L_FUN  , KC_RBRC, DK_N,   DK_M ,DK_COMM, DK_DOT ,DK_MINS, KC_RSFT,
+                                 L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NAV  ,    L_NUR  , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
     ),
 
 /*
- * Sym Layer: Numbers and symbols
+ * Numrow Layer: Numrow and numrow symbols
  */
-    [_SYM] = LAYOUT(
+    [_NUMROW] = LAYOUT(
      DK_HALF ,   DK_1 ,   DK_2 ,   DK_3 ,   DK_4 ,   DK_5 ,                                       DK_6 ,   DK_7 ,   DK_8 ,   DK_9 ,   DK_0 , DK_PLUS ,
      DK_HALF , S(DK_1), S(DK_2), S(DK_3), DK_DLR , S(DK_5),                                     S(DK_6), S(DK_7), S(DK_8), S(DK_9), S(DK_0), DK_QUES ,
      DK_BSLS , XXXXXXX, DK_AT  , DK_PND , S(DK_4), XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, DK_TILD, DK_LCBR, DK_LBRC, DK_RBRC, DK_RCBR, DK_PIPE ,
@@ -156,7 +156,7 @@ bool oled_task_user(void) {
             case _NAV:
                 oled_write_P(PSTR("Nav\n"), false);
                 break;
-            case _SYM:
+            case _NUMROW:
                 oled_write_P(PSTR("Sym\n"), false);
                 break;
             case _FUNCTION:
