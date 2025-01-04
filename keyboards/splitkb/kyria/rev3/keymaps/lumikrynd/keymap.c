@@ -134,6 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+#ifdef COMBO_ENABLE
 // Combo keys, dk characters
 const uint16_t PROGMEM ae_combo[] = {DK_I, DK_O, COMBO_END};
 const uint16_t PROGMEM oe_combo[] = {DK_K, DK_L, COMBO_END};
@@ -144,6 +145,7 @@ combo_t key_combos[] = {
     COMBO(oe_combo, DK_OE),
     COMBO(aa_combo, DK_AA),
 };
+#endif
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
