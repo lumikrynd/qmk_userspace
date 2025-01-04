@@ -21,6 +21,7 @@
 
 enum layers {
     _QWERTY = 0,
+    _QWERTY_HOMEROW,
     _NUMROW,
     _NAV,
     _FUNCTION,
@@ -38,12 +39,27 @@ enum layers {
 #define L_ADJ    MO(_ADJUST)
 #define L_NUP    MO(_NUMPAD)
 
+#define A_HROW   TG(_QWERTY_HOMEROW)
+
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_DIA  MT(MOD_RCTL, DK_DIAE)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
 #define AGR_ENT  MT(MOD_RALT, KC_ENT)
 #define SFT_LBK  MT(MOD_LSFT, DK_LABK)
 #define SFT_ACU  MT(MOD_RSFT, DK_ACUT)
+
+#define HRR_SFT  MT(MOD_LSFT, DK_F)
+#define HRR_CTL  MT(MOD_LCTL, DK_D)
+#define HRR_ALT  MT(MOD_LALT, DK_S)
+#define HRR_GUI  MT(MOD_LGUI, DK_A)
+#define HRR_AGR  MT(MOD_RALT, DK_V)
+
+#define HRL_SFT  MT(MOD_LSFT, DK_J)
+#define HRL_CTL  MT(MOD_LCTL, DK_K)
+#define HRL_ALT  MT(MOD_LALT, DK_L)
+#define HRL_GUI  MT(MOD_LGUI, DK_QUOT)
+#define HRL_AGR  MT(MOD_RALT, DK_M)
+
 
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
@@ -59,6 +75,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      CTL_ESC , DK_A ,  DK_S   ,  DK_D  ,   DK_F ,   DK_G ,                                         DK_H ,   DK_J ,   DK_K ,   DK_L , DK_QUOT, CTL_DIA,
      SFT_LBK , DK_Z ,  DK_X   ,  DK_C  ,   DK_V ,   DK_B , XXXXXXX, L_NAV  ,    L_FUN  , KC_CAPS,  DK_N ,   DK_M , DK_COMM, DK_DOT , DK_MINS, SFT_ACU,
                                  L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NUR  ,    L_NUR  , KC_SPC ,AGR_ENT, KC_RGUI, KC_APP
+    ),
+
+/*
+ * Base layer homerow modification
+ */
+    [_QWERTY_HOMEROW] = LAYOUT(
+      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, HRR_GUI, HRR_ALT, HRR_CTL, HRR_SFT, _______,                                     _______, HRL_SFT, HRL_CTL, HRL_ALT, HRL_GUI, _______,
+      _______, _______, _______, _______, HRR_AGR, _______, _______, _______, _______, _______, _______, HRL_AGR, _______, _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -96,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_ADJUST] = LAYOUT(
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QWERTY ,                                     MS_WHLL, MS_WHLD, MS_WHLU, MS_WHLR, XXXXXXX, XXXXXXX,
-      RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, XXXXXXX,                                     MS_LEFT, MS_DOWN, MS_UP  , MS_RGHT, XXXXXXX, XXXXXXX,
+      RM_TOGG, RM_SATU, RM_HUEU, RM_VALU, RM_NEXT, A_HROW ,                                     MS_LEFT, MS_DOWN, MS_UP  , MS_RGHT, XXXXXXX, XXXXXXX,
       XXXXXXX, RM_SATD, RM_HUED, RM_VALD, RM_PREV, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MS_BTN1, MS_BTN2, MS_BTN3, XXXXXXX, XXXXXXX,
                                  _______, XXXXXXX, XXXXXXX, XXXXXXX, L_NUP  , XXXXXXX, MS_BTN1, MS_BTN2, XXXXXXX, XXXXXXX
     ),
@@ -173,6 +199,7 @@ bool oled_task_user(void) {
         oled_write_P(PSTR("Layer: "), false);
         switch (get_highest_layer(layer_state|default_layer_state)) {
             case _QWERTY:
+            case _QWERTY_HOMEROW:
                 oled_write_P(PSTR("QWERTY\n"), false);
                 break;
             case _NAV:
