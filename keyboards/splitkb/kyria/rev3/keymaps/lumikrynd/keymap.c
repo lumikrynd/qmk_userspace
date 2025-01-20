@@ -61,6 +61,39 @@ enum layers {
 #define HRL_AGR  MT(MOD_RALT, DK_M)
 
 
+#ifdef TAP_DANCE_ENABLE
+
+#define L_NRFU   TD(TD_DUAL_LAYER)
+
+enum {
+    TD_DUAL_LAYER,
+};
+
+// tap-dance states
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP,
+    TD_DOUBLE_HOLD
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+// Function associated with all tap dances
+td_state_t cur_dance(tap_dance_state_t *state);
+
+// Functions associated with individual tap dances
+void dual_layer_finished(tap_dance_state_t *state, void *user_data);
+void dual_layer_reset(tap_dance_state_t *state, void *user_data);
+
+#endif
+
+
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
 // produces the key `tap` when tapped (i.e. pressed and released).
@@ -74,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , DK_Q ,  DK_W   ,  DK_E  ,   DK_R ,   DK_T ,                                         DK_Y ,   DK_U ,   DK_I ,   DK_O ,   DK_P , KC_BSPC,
      CTL_ESC , DK_A ,  DK_S   ,  DK_D  ,   DK_F ,   DK_G ,                                         DK_H ,   DK_J ,   DK_K ,   DK_L , DK_QUOT, CTL_DIA,
      SFT_LBK , DK_Z ,  DK_X   ,  DK_C  ,   DK_V ,   DK_B , XXXXXXX, L_NAV  ,    L_FUN  , KC_CAPS,  DK_N ,   DK_M , DK_COMM, DK_DOT , DK_MINS, SFT_ACU,
-                                 L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NUR  ,    L_NUR  , KC_SPC ,AGR_ENT, KC_RGUI, KC_APP
+                                 L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NRFU ,    L_NUR  , KC_SPC ,AGR_ENT, KC_RGUI, KC_APP
     ),
 
 /*
@@ -174,6 +207,62 @@ combo_t key_combos[] = {
     COMBO(aa_combo, DK_AA),
 };
 #endif
+
+
+#ifdef TAP_DANCE_ENABLE
+
+// Tap Dance definitions
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_DUAL_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dual_layer_finished, dual_layer_reset)
+};
+
+td_state_t ur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) {
+        if (state->interrupted || !state->pressed) return TD_DOUBLE_TAP;
+        else return TD_DOUBLE_HOLD;
+    }
+    else return TD_UNKNOWN;
+}
+
+// Initialize tap structure associated with example tap dance key
+static td_tap_t dual_layer_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+// Functions that control what our tap dance key does
+void dual_layer_finished(tap_dance_state_t *state, void *user_data) {
+    dual_layer_tap_state.state = cur_dance(state);
+    switch (dual_layer_tap_state.state) {
+        case TD_SINGLE_TAP:
+        case TD_DOUBLE_TAP:
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(_NUMROW);
+            break;
+        case TD_DOUBLE_HOLD:
+            layer_on(_FUNCTION);
+            break;
+        default:
+            break;
+    }
+}
+
+void dual_layer_reset(tap_dance_state_t *state, void *user_data) {
+    if (dual_layer_tap_state.state == TD_SINGLE_HOLD) {
+        layer_off(_NUMROW);
+    }
+    else if (dual_layer_tap_state.state == TD_DOUBLE_HOLD) {
+        layer_off(_FUNCTION);
+    }
+    dual_layer_tap_state.state = TD_NONE;
+}
+
+#endif
+
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
