@@ -201,8 +201,10 @@ bool oled_task_user(void) {
         oled_write_P(PSTR("Layer: "), false);
         switch (get_highest_layer(layer_state|default_layer_state)) {
             case _QWERTY:
-            case _QWERTY_HOMEROW:
                 oled_write_P(PSTR("QWERTY\n"), false);
+                break;
+            case _QWERTY_HOMEROW:
+                oled_write_P(PSTR("QWERTY HR\n"), false);
                 break;
             case _NAV:
                 oled_write_P(PSTR("Nav\n"), false);
