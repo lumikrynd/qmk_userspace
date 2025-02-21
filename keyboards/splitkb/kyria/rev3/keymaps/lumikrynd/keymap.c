@@ -216,12 +216,17 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_DUAL_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dual_layer_finished, dual_layer_reset)
 };
 
-td_state_t ur_dance(tap_dance_state_t *state) {
+// Checks if it is a tap (hold preferred)
+bool is_tap(tap_dance_state_t *state) {
+    return !state->pressed && !state->interrupted;
+}
+
+td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+        if (is_tap(state)) return TD_SINGLE_TAP;
         else return TD_SINGLE_HOLD;
     } else if (state->count == 2) {
-        if (state->interrupted || !state->pressed) return TD_DOUBLE_TAP;
+        if (is_tap(state)) return TD_DOUBLE_TAP;
         else return TD_DOUBLE_HOLD;
     }
     else return TD_UNKNOWN;
