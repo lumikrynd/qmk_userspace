@@ -61,6 +61,22 @@ enum layers {
 #define HRL_AGR  MT(MOD_RALT, DK_M)
 
 
+#ifdef TAP_DANCE_ENABLE
+
+#define L_NRFU   TD(TD_MULTI_LAYER)
+
+enum {
+    TD_MULTI_LAYER,
+};
+
+// Functions associated with individual tap dances
+void multi_layer_tap(tap_dance_state_t *state, void *user_data);
+void multi_layer_finished(tap_dance_state_t *state, void *user_data);
+void multi_layer_reset(tap_dance_state_t *state, void *user_data);
+
+#endif
+
+
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
 // produces the key `tap` when tapped (i.e. pressed and released).
@@ -74,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , DK_Q ,  DK_W   ,  DK_E  ,   DK_R ,   DK_T ,                                         DK_Y ,   DK_U ,   DK_I ,   DK_O ,   DK_P , KC_BSPC,
      CTL_ESC , DK_A ,  DK_S   ,  DK_D  ,   DK_F ,   DK_G ,                                         DK_H ,   DK_J ,   DK_K ,   DK_L , DK_QUOT, CTL_DIA,
      SFT_LBK , DK_Z ,  DK_X   ,  DK_C  ,   DK_V ,   DK_B , XXXXXXX, L_NAV  ,    L_FUN  , KC_CAPS,  DK_N ,   DK_M , DK_COMM, DK_DOT , DK_MINS, SFT_ACU,
-                                 L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NUR  ,    L_NUR  , KC_SPC ,AGR_ENT, KC_RGUI, KC_APP
+                                 L_ADJ , KC_LGUI, ALT_ENT, KC_SPC , L_NRFU ,    L_NUR  , KC_SPC ,AGR_ENT, KC_RGUI, KC_APP
     ),
 
 /*
@@ -114,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       XXXXXXX,  KC_F9 ,  KC_F10,  KC_F11,  KC_F12, XXXXXXX,                                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
       XXXXXXX,  KC_F5 ,  KC_F6 ,  KC_F7 ,  KC_F8 , XXXXXXX,                                     XXXXXXX, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, XXXXXXX,
       XXXXXXX,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+                                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
 /*
@@ -174,6 +190,38 @@ combo_t key_combos[] = {
     COMBO(aa_combo, DK_AA),
 };
 #endif
+
+
+#ifdef TAP_DANCE_ENABLE
+
+// Tap Dance definitions
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_MULTI_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(multi_layer_tap, multi_layer_finished, multi_layer_reset)
+};
+
+// Multi layer functions
+void multi_layer_tap(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            layer_on(_NUMROW);
+            break;
+        case 2:
+            layer_off(_NUMROW);
+            layer_on(_FUNCTION);
+            break;
+    }
+}
+
+void multi_layer_finished(tap_dance_state_t *state, void *user_data) {
+}
+
+void multi_layer_reset(tap_dance_state_t *state, void *user_data) {
+    layer_off(_NUMROW);
+    layer_off(_FUNCTION);
+}
+
+#endif
+
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
  * These default settings can be overriden by your own settings in your keymap.c
