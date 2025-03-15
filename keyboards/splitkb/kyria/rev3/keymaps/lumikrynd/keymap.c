@@ -52,13 +52,13 @@ enum layers {
 #define HRR_CTL  MT(MOD_LCTL, DK_D)
 #define HRR_ALT  MT(MOD_LALT, DK_S)
 #define HRR_GUI  MT(MOD_LGUI, DK_A)
-#define HRR_AGR  MT(MOD_RALT, DK_V)
+#define HRR_AGR  MT(MOD_RALT, DK_R)
 
 #define HRL_SFT  MT(MOD_LSFT, DK_J)
 #define HRL_CTL  MT(MOD_LCTL, DK_K)
 #define HRL_ALT  MT(MOD_LALT, DK_L)
 #define HRL_GUI  MT(MOD_LGUI, DK_QUOT)
-#define HRL_AGR  MT(MOD_RALT, DK_M)
+#define HRL_AGR  MT(MOD_RALT, DK_U)
 
 
 #ifdef TAP_DANCE_ENABLE
@@ -97,9 +97,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Base layer homerow modification
  */
     [_QWERTY_HOMEROW] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, HRR_AGR, _______,                                     _______, HRL_AGR, _______, _______, _______, _______,
       _______, HRR_GUI, HRR_ALT, HRR_CTL, HRR_SFT, _______,                                     _______, HRL_SFT, HRL_CTL, HRL_ALT, HRL_GUI, _______,
-      _______, _______, _______, _______, HRR_AGR, _______, _______, _______, _______, _______, _______, HRL_AGR, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
