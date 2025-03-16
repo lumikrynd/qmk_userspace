@@ -320,3 +320,15 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return false;
 }
 #endif
+
+#ifdef TAPPING_TERM_PER_KEY
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case HRL_SFT:
+        case HRR_SFT:
+            return 150;
+        default:
+            return TAPPING_TERM;
+    }
+}
+#endif

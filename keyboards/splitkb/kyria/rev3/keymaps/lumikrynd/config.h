@@ -16,8 +16,9 @@
 
 #pragma once
 
-#define TAPPING_TERM 200
 #define COMBO_TERM 35
+#define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
 
 // Mouse configs
 #define MOUSEKEY_DELAY 10               // Delay between pressing a movement key and cursor movement
