@@ -180,16 +180,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef COMBO_ENABLE
 // Combo keys, dk characters
-const uint16_t PROGMEM ae_combo[] = {DK_I, DK_O, COMBO_END};
-const uint16_t PROGMEM oe_combo[] = {DK_K, DK_L, COMBO_END};
-const uint16_t PROGMEM oe_hr_combo[] = {HRL_CTL, HRL_ALT, COMBO_END};
-const uint16_t PROGMEM aa_combo[] = {DK_COMM, DK_DOT, COMBO_END};
+const uint16_t PROGMEM ae_combo[] = {DK_U, DK_I, COMBO_END};
+const uint16_t PROGMEM oe_combo[] = {DK_I, DK_O, COMBO_END};
+const uint16_t PROGMEM aa_combo[] = {DK_O, DK_P, COMBO_END};
+const uint16_t PROGMEM ae_hr_combo[] = {HRR_AGR, DK_I, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(ae_combo, DK_AE),
     COMBO(oe_combo, DK_OE),
-    COMBO(oe_hr_combo, DK_OE),
     COMBO(aa_combo, DK_AA),
+    COMBO(ae_hr_combo, DK_AE),
 };
 #endif
 
